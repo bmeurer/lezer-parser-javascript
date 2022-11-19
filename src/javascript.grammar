@@ -230,7 +230,7 @@ TypeAnnotation { ":" type }
 TypePredicate { ":" (VariableName | kw<"this">) !predicate tskw<"is"> type }
 
 patternAssignTyped {
-  pattern Optional? TypeAnnotation? ("=" expressionNoComma)?
+  decorator* pattern Optional? TypeAnnotation? ("=" expressionNoComma)?
 }
 
 ParamList {

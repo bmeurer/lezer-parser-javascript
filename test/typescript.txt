@@ -291,3 +291,30 @@ Script(FunctionDeclaration(
   Decorator(CallExpression(VariableName,ArgList("(",ObjectExpression("{","}"),")"))),
   function,Star,
   VariableDefinition,ParamList,Block))
+
+# Simple decorator on a function parameter {"dialect": "ts"}
+
+function foo(@MyDecorator x) {}
+
+==>
+
+Script(FunctionDeclaration(
+  function,
+  VariableDefinition,
+  ParamList("(",Decorator(VariableName),VariableDefinition,")"),
+  Block))
+
+# Multiple simple decorators on an object pattern parameter {"dialect": "ts"}
+
+function f(@g @h {x, y}) {}
+
+==>
+
+Script(FunctionDeclaration(
+  function,
+  VariableDefinition,
+  ParamList("(",
+    Decorator(VariableName),
+    Decorator(VariableName),
+    ObjectPattern("{",PatternProperty(PropertyName),",",PatternProperty(PropertyName),"}"),")"),
+  Block))
