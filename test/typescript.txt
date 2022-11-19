@@ -215,3 +215,43 @@ let x = 1 satisfies number
 ==>
 
 Script(VariableDeclaration(let,VariableDefinition,Equals,BinaryExpression(Number,satisfies,TypeName)))
+
+# A simple decorator on a class declaration {"dialect": "ts"}
+
+@MyDecorator
+class MyKlass {}
+
+==>
+
+Script(ClassDeclaration(
+  Decorator(VariableName),
+  class,
+  VariableDefinition,
+  ClassBody))
+
+# Multiple simple decorators on a class declaration {"dialect": "ts"}
+
+@f @g class F {}
+
+==>
+
+Script(ClassDeclaration(
+  Decorator(VariableName),Decorator(VariableName),
+  class,
+  VariableDefinition,
+  ClassBody))
+
+# Decorator factories on an abstract class declaration {"dialect": "ts"}
+
+@foo({x: 1})
+@bar("MyClass", 42)
+abstract class K { }
+
+==>
+
+Script(ClassDeclaration(
+  Decorator(CallExpression(VariableName,ArgList("(",ObjectExpression("{",Property(PropertyDefinition,":",Number),"}"),")"))),
+  Decorator(CallExpression(VariableName,ArgList("(",String,",",Number,")"))),
+  abstract,class,
+  VariableDefinition,
+  ClassBody))

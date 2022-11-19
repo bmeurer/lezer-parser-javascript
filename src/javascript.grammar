@@ -120,7 +120,7 @@ FunctionDeclaration {
 }
 
 ClassDeclaration {
-  !statement tskw<"abstract">? kw<"class"> VariableDefinition TypeParamList?
+  !statement decorator* tskw<"abstract">? kw<"class"> VariableDefinition TypeParamList?
   (kw<"extends"> expression | TSExtends type)?
   (tskw<"implements"> commaSep1<type>)?
   ClassBody
@@ -136,6 +136,10 @@ privacy {
 
 privacyArg {
   @extend[@name=Privacy,@dialect=ts]<identifier, "public" | "private" | "protected">
+}
+
+decorator {
+  Decorator { tsDecorator expression }
 }
 
 MethodDeclaration[group=ClassItem] {
@@ -650,6 +654,8 @@ questionOp[@name=LogicOp] { "?" }
   JSXText { ![<{]+ }
 
   tsAngleOpen[@dialect=ts] { "<" }
+
+  tsDecorator[@dialect=ts] { "@" }
 
   @precedence { JSXStartTag, tsAngleOpen }
 }
