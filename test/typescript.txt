@@ -216,7 +216,7 @@ let x = 1 satisfies number
 
 Script(VariableDeclaration(let,VariableDefinition,Equals,BinaryExpression(Number,satisfies,TypeName)))
 
-# A simple decorator on a class declaration {"dialect": "ts"}
+# Simple decorator on a class declaration {"dialect": "ts"}
 
 @MyDecorator
 class MyKlass {}
@@ -255,3 +255,39 @@ Script(ClassDeclaration(
   abstract,class,
   VariableDefinition,
   ClassBody))
+
+# Simple decorator on a function declaration {"dialect": "ts"}
+
+@MyDecorator function foo() {}
+
+==>
+
+Script(FunctionDeclaration(
+  Decorator(VariableName),
+  function,
+  VariableDefinition,ParamList,Block))
+
+# Multiple simple decorators on an async function declaration {"dialect": "ts"}
+
+@f @g async function bar() {}
+
+==>
+
+Script(FunctionDeclaration(
+  Decorator(VariableName),Decorator(VariableName),
+  async,function,
+  VariableDefinition,ParamList,Block))
+
+# Decorator factories on a generator function declaration {"dialect": "ts"}
+
+@foo(1, 2)
+@bar({})
+function* baz() {}
+
+==>
+
+Script(FunctionDeclaration(
+  Decorator(CallExpression(VariableName,ArgList("(",Number,",",Number,")"))),
+  Decorator(CallExpression(VariableName,ArgList("(",ObjectExpression("{","}"),")"))),
+  function,Star,
+  VariableDefinition,ParamList,Block))

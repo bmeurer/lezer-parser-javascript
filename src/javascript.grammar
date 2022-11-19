@@ -116,7 +116,7 @@ declaration {
 }
 
 FunctionDeclaration {
-  async? !statement kw<"function"> Star? VariableDefinition? functionSignature Block
+  decorator* async? !statement kw<"function"> Star? VariableDefinition? functionSignature Block
 }
 
 ClassDeclaration {
@@ -136,10 +136,6 @@ privacy {
 
 privacyArg {
   @extend[@name=Privacy,@dialect=ts]<identifier, "public" | "private" | "protected">
-}
-
-decorator {
-  Decorator { tsDecorator expression }
 }
 
 MethodDeclaration[group=ClassItem] {
@@ -213,6 +209,10 @@ AmbientDeclaration {
       async? kw<"function"> Star? VariableDefinition? TypeParamList? ParamList (TypeAnnotation | TypePredicate) semi
     }
   )
+}
+
+decorator {
+  Decorator { tsDecorator expressionNoComma }
 }
 
 pattern { VariableDefinition | ArrayPattern | ObjectPattern }
