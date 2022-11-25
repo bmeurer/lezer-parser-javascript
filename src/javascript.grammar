@@ -139,6 +139,7 @@ privacyArg {
 }
 
 MethodDeclaration[group=ClassItem] {
+  decorator*
   privacy?
   (pkwMod<"static"> | tsPkwMod<"abstract">)?
   tsPkwMod<"override">?
@@ -625,6 +626,8 @@ questionOp[@name=LogicOp] { "?" }
   BitOp<expr> { expr }
   CompareOp<expr> { expr }
   UpdateOp<expr> { expr }
+
+  @precedence { "*", ArithOp }
 
   RegExp { "/" (![/\\\n[] | "\\" ![\n] | "[" (![\n\\\]] | "\\" ![\n])* "]")+ ("/" $[gimsuy]*)? }
 
